@@ -69,7 +69,9 @@ class ScripterApp(App):
     self._maximised()
     eventbus.on(RequestForegroundPushEvent, self._handle_foreground_push, self)
    except Exception as e:
-    sys.print_exception(e)
+
+    # ignore type error here: cpython doesn't have print_exception, but sim and badge do.
+    sys.print_exception(e) # type: ignore
 
   def _reset_steps(self):
     end_stack: list[BlockStep] = []
