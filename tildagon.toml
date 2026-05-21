@@ -1,6 +1,6 @@
 [app]
 # The name of your app as displayed in the menu
-name = "Actions"
+name = "Scripter"
 
 # The submenu where your app should appear.
 # One of: "Badge", "Music", "Media", "Apps", "Games", "Background"
@@ -31,7 +31,7 @@ license = "GPL-3.0-only"
 url = "https://www.github.com/benclifford/tildagon-sequencer"
 
 # Description of your app.  Maximum 140 characters!
-description = "Experimental on-Tildagon programming system"
+description = "Experimental on-Tildagon programming/scripter system"
 
 # Version number of your app.  If you push a commit where this number is
 # increased, we interpret this as a new version being released.
