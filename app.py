@@ -538,8 +538,10 @@ class Step:
 
 
 # kind of step that pairs with an EndStep to scope out a block of steps
-class BlockStep(Step): ...
-
+class BlockStep(Step):
+    def progress_end_step(self):
+        """What to do when the corresponding EndStep is reached."""
+        ...
 
 class LEDStep(Step):
   def __init__(self, r, g, b):
