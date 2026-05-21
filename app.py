@@ -22,7 +22,7 @@ OTHER_SIZE = 20
 
 STEP_PERIOD_MS = 100
 
-class SequencerApp(App):
+class ScripterApp(App):
   def __init__(self):
    try:
     self.sequence = [WhenButtonPushedStep(self),
@@ -93,14 +93,14 @@ class SequencerApp(App):
 
   def _handle_foreground_push(self, event):
     if event.app == self:
-      print("Foreground push for sequencer app - restoring foreground state")
+      print("Foreground push for scripter app - restoring foreground state")
       self._maximised()
     else:
       print("Foreground push for other app - ignoring")
 
   def _maximised(self):
     eventbus.on(ButtonDownEvent, self._handle_buttondown, self)
-    print("Sequencer is disabling pattern in update")
+    print("Scripter is disabling pattern in update")
     eventbus.emit(PatternDisable())
 
   def update(self, delta):
@@ -285,7 +285,7 @@ class SequencerApp(App):
   def _handle_menu_back(self):
     # back should back the menu go away and then go to EDIT mode (because
     # is where we came from before the menu)
-    print("BACK from Sequencer App menu")
+    print("BACK from Scripter App menu")
     assert self._mode == MENU_MODE, "should be in menu mode"
     assert isinstance(self.ui_delegate, Menu), "in menu mode, the UI delegate should be Menu"
     self.ui_delegate._cleanup()
@@ -293,7 +293,7 @@ class SequencerApp(App):
     self._mode = EDIT_MODE
 
   def _handle_menu_select(self, item, idx):
-    print(f"SELECT from Sequencer App menu: item={item} idx={idx}")
+    print(f"SELECT from Scripter App menu: item={item} idx={idx}")
     assert self._mode == MENU_MODE, "should be in menu mode"
     assert isinstance(self.ui_delegate, Menu), "in menu mode, the UI delegate should be Menu"
 
@@ -340,7 +340,7 @@ class SequencerApp(App):
     else:
       print("Selected menu item is unhandled - ignoring")
 
-__app_export__ = SequencerApp
+__app_export__ = ScripterApp
 
 
 class InsertStepUI:

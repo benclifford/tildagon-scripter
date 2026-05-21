@@ -1,17 +1,17 @@
-# Sequencer
+# Scripter 
 
-![Screenshot of sequencer UI](imgs/screenshot.jpg)
+![Screenshot of scriper UI](imgs/screenshot.jpg)
 
 ## Install
 
 ```
-mpremote fs mkdir /apps/sequencer
-mpremote fs cp app.py :/apps/sequencer/
+mpremote fs mkdir /apps/scripter
+mpremote fs cp app.py :/apps/scripter/
 ```
 
 ## The default program
 
-The default program will trigger a sequence of LED flashes. Then it will
+The default program will trigger a scripted sequence of LED flashes. Then it will
 wait for:
 
 * any button (except CANCEL) to be pressed and do some more flashing every time
@@ -49,7 +49,7 @@ You can:
 * play the program in background - this will play like play mode, but return
   you to the App Launcher so you can do other things. Your program will continue
   running (although 'When button pushed' events won't happen). You can go back
-  into normal play mode by navigating back into the sequencer app.
+  into normal play mode by navigating back into the scripter app.
 
 ## Step creators
 
