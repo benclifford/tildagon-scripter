@@ -655,7 +655,7 @@ class WhenIMUUpright(BlockStep):
   def __init__(self):
     # when upright, IMU says (approx) (9, 0, 0)
     self.last_state = 0  # 0 = unknown
-    self.last_imu_x = 0
+    self.last_imu_x = 0.0
 
   def poll_for_when(self):
     next_imu_acc = imu.acc_read()
