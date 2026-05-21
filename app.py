@@ -72,7 +72,7 @@ class ScripterApp(App):
     sys.print_exception(e)
 
   def _reset_steps(self):
-    end_stack = []
+    end_stack: list[BlockStep] = []
     n = 0
     for step in self.sequence:
       step.reset()
