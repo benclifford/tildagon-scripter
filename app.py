@@ -775,7 +775,11 @@ class EndStep(Step):
     return self._start_step.progress_end_step()
 
   def render(self, mode, ctx, render_step, y, text_colour):
-    text = "End " + self._start_step.get_end_name()
+    if self._start_step:
+        text = "End " + self._start_step.get_end_name()
+    else:
+        text = "End ... of something?"
+        print("consistency error: end step with missing start step")
     tw = ctx.text_width(text)
 
     # TODO: This line doesn't work nicely when the end block is for an
