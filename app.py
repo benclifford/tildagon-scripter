@@ -13,6 +13,7 @@ import time
 
 from .steps.base import BlockStep, Step, EndStep, WhenStep
 from .steps.button import WhenButtonPushedStep
+from .steps.count import CountLoopsStep
 from .steps.forever import RepeatForeverStep
 from .steps.imu import WhenIMUUpright
 from .steps.whenplay import WhenPlayStep
@@ -586,19 +587,3 @@ class PauseStep(Step):
 
   def reset(self):
     self.entered_time = None
-
-
-class CountLoopsStep(Step):
-  def __init__(self):
-    self.reset()
-
-  def enter_step(self):
-    self.count += 1
-
-  def render(self, mode, ctx, render_step, y, text_colour):
-    text = f"{render_step}: Counted {self.count} times"
-    tw = ctx.text_width(text)
-    ctx.move_to(int(-tw/2), y).rgb(*text_colour).text(text)
-
-  def reset(self):
-    self.count = 0
