@@ -2,7 +2,7 @@ from events.input import BUTTON_TYPES, ButtonDownEvent
 from system.eventbus import eventbus
 
 from .base import WhenStep
-from ..const import LIVE_SIZE, PLAY_MODE
+from ..const import LIVE_SIZE, PLAY_MODE, EDIT_MODE
 
 
 
@@ -44,3 +44,23 @@ class WhenButtonPushedStep(WhenStep):
 
   def progress_end_step(self):
     return False
+
+
+class InsertWhenButtonPushedUI:
+  def __init__(self, app):
+    self.app = app
+
+  def update(self, delta):
+    self.app.sequence.insert(self.app.sequence_pos, WhenButtonPushedStep(self.app))
+    self.app.sequence_pos += 1
+
+    assert self.app.sequence_pos >= 0
+    assert self.app.sequence_pos < len(self.app.sequence)
+
+    # and remove ourselves from the app
+    self.app.ui_delegate = None
+    self.app._mode = EDIT_MODE
+
+
+  def draw(self, ctx):
+    pass
