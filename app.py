@@ -90,11 +90,15 @@ class ScripterApp(App):
       step.reset()
 
       step._step_number = n
+
+      if isinstance(step, WhenStep):
+        assert end_stack == [], f"When-steps can only occur at the top level: {end_stack}"
  
       if isinstance(step, BlockStep):
         print(f"Appending to block stack for step {n}, {step}")
         print(f"Stack: {end_stack}")
         end_stack.append(step)
+
       if isinstance(step, EndStep):
         print(f"Popping from block stack for step {n}, {step}")
         step._start_step = end_stack.pop()
@@ -340,6 +344,15 @@ class ScripterApp(App):
       eventbus.remove(ButtonDownEvent, self._handle_buttondown, self)
       self.minimise()
     elif item == "Delete step":
+      # This should delete the current step and everything enclosed,
+      # if it is a block:
+      # Precondition: the nesting is well formed, nesting-wise
+      # Postcondition: the nesting is still well formed
+      # self._reset_steps() will raise an assertion if not, so use
+      # that as the assertion checker. (don't need to be calling each
+      # step's reset method each time, but I think that's not expensive)
+      self._reset_steps()
+
       # delete current step then switch back to edit mode
       assert self.sequence_pos >= 0
       assert self.sequence_pos < len(self.sequence)
@@ -355,6 +368,8 @@ class ScripterApp(App):
 
       assert self.sequence_pos >= 0
       assert self.sequence_pos < len(self.sequence)
+      # postcondition: still well-formed, nestingwise
+      self._reset_steps()
 
       self.ui_delegate._cleanup()
       self.ui_delegate = None
