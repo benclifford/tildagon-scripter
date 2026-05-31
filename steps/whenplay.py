@@ -1,5 +1,5 @@
-from .base import WhenStep
-from ..const import LIVE_SIZE
+from .base import EndStep, WhenStep
+from ..const import LIVE_SIZE, EDIT_MODE
 
 class WhenPlayStep(WhenStep):
 
@@ -28,3 +28,33 @@ class WhenPlayStep(WhenStep):
 
   def reset(self):
     self._start = True
+
+
+class InsertWhenPlayStepUI:
+  def __init__(self, app):
+    self.app = app
+
+  def update(self, delta):
+    """This is a WhenStep so the insert should happen at the end of the program, as a new top level block."""
+    self.app.sequence.append(WhenPlayStep())
+    self.app.sequence.append(EndStep())
+
+    # move cursor to end step so that a subsequent InsertStep will populate the new when block
+    self.app.sequence_pos = len(self.app.sequence) - 1
+
+    assert self.app.sequence_pos >= 0
+    assert self.app.sequence_pos < len(self.app.sequence)
+
+    # this will make the end step be populated properly
+    # which won't happen otherwise.
+    # TODO: maybe steps (aka step authors) shouldn't be
+    # responsible for this and I can make it happen when
+    # going back to one of the framework modes?
+    self.app._reset_steps()
+
+    # and remove ourselves from the app
+    self.app.ui_delegate = None
+    self.app._mode = EDIT_MODE
+
+  def draw(self, ctx):
+    pass

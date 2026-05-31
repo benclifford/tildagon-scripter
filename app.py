@@ -18,7 +18,7 @@ from .steps.forever import RepeatForeverStep, InsertRepeatForeverStepUI
 from .steps.imu import WhenIMUUpright, InsertIMUUpright
 from .steps.led import LEDStep, InsertLEDStepUI
 from .steps.pause import PauseStep, InsertPauseStepUI
-from .steps.whenplay import WhenPlayStep
+from .steps.whenplay import WhenPlayStep, InsertWhenPlayStepUI
 
 from .const import LIVE_SIZE, PLAY_MODE, EDIT_MODE, MENU_MODE, INSERT_STEP_MODE
 
@@ -433,7 +433,7 @@ class InsertStepUI:
 
     # TODO: generate this list from step class registrations
     # somehow - rather than hard-coding here.
-    self.ui_delegate = Menu(self.app, ["Set LEDs", "Pause", "Count loops", "When button pushed", "When badge goes upright", "Repeat forever"], select_handler=self._handle_menu_select, back_handler=self._handle_menu_back)
+    self.ui_delegate = Menu(self.app, ["Set LEDs", "Pause", "Count loops", "When button pushed", "When badge goes upright", "When play starts", "Repeat forever"], select_handler=self._handle_menu_select, back_handler=self._handle_menu_back)
 
   def update(self, delta):
     self.ui_delegate.update(delta)
@@ -467,6 +467,8 @@ class InsertStepUI:
       self.ui_delegate = InsertRepeatForeverStepUI(self.app)
     elif item == "When badge goes upright":
       self.ui_delegate = InsertIMUUpright(self.app)
+    elif item == "When play starts":
+      self.ui_delegate = InsertWhenPlayStepUI(self.app)
     else:
       assert False, "No UI to create this step type"
 
