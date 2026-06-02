@@ -443,7 +443,19 @@ class InsertStepUI:
 
     # TODO: generate this list from step class registrations
     # somehow - rather than hard-coding here.
-    self.ui_delegate = Menu(self.app, ["Set LEDs", "Pause", "Count loops", "When button pushed", "When badge goes upright", "When play starts", "Repeat forever"], select_handler=self._handle_menu_select, back_handler=self._handle_menu_back)
+    # TODO: steps should only be available on this menu if they
+    # are insertable. That is:
+    #  * when steps can always be inserted
+    #  * other steps can only be inserted if we aren't focused on
+    #    a top level (When) step
+    assert self.app.sequence_pos >= 0
+    assert self.app.sequence_pos < len(self.app.sequence)
+    step_menu_options = ["When button pushed", "When badge goes upright", "When play starts"]
+
+    if not isinstance(self.app.sequence[self.app.sequence_pos], WhenStep):
+        step_menu_options.extend(["Set LEDs", "Pause", "Count loops", "Repeat forever"])
+
+    self.ui_delegate = Menu(self.app, step_menu_options, select_handler=self._handle_menu_select, back_handler=self._handle_menu_back)
 
   def update(self, delta):
     self.ui_delegate.update(delta)
