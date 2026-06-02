@@ -135,9 +135,18 @@ class ScripterApp(App):
     elif self._mode == MENU_MODE:
       # print("main menu update")
       if self.ui_delegate is None:
-          self.ui_delegate = Menu(self, ["Insert step", "Delete step", "Play", "Play in background"], select_handler=self._handle_menu_select, back_handler=self._handle_menu_back)
+          main_menu_options = ["Insert step"]
+
+          # Delete step is available for everyting except EndStep
+          assert self.sequence_pos >= 0
+          assert self.sequence_pos < len(self.sequence)
+          if not isinstance(self.sequence[self.sequence_pos], EndStep):
+              main_menu_options.append("Delete step")
+
+          main_menu_options.extend(["Play", "Play in background"])
+
+          self.ui_delegate = Menu(self, main_menu_options, select_handler=self._handle_menu_select, back_handler=self._handle_menu_back)
           # TODO: Edit step
-          # TODO: Play in background
           # TODO: Choose difficulty
       return self.ui_delegate.update(delta)
     elif self._mode == INSERT_STEP_MODE:
@@ -419,7 +428,7 @@ class ScripterApp(App):
       self.ui_delegate = None
       self._mode = INSERT_STEP_MODE
     else:
-      print("Selected menu item is unhandled - ignoring")
+      assert False, f"Selected menu item is unhandled: {item}"
 
 __app_export__ = ScripterApp
 
