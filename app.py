@@ -393,6 +393,9 @@ class ScripterApp(App):
 
           del self.sequence[self.sequence_pos:end_step_pos+1] 
 
+          if self.sequence_pos >= len(self.sequence):
+              self.sequence_pos = len(self.sequence) - 1
+
           # postconditions on well-formedness 
           self._reset_steps()
           assert self.sequence_pos >= 0
