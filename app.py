@@ -375,9 +375,7 @@ class ScripterApp(App):
       step = self.sequence[self.sequence_pos]
 
       if isinstance(step, EndStep):
-          # TODO: show a guiding message rather than
-          # silently ignoring.
-          pass
+          assert False, "UI should not have allowed delete of EndStep"
       elif isinstance(step, BlockStep):
           # delete entire block.
           # self._reset_steps() will ensure that we're well-formed
