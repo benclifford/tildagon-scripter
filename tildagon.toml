@@ -4,7 +4,7 @@ name = "Scripter"
 
 # The submenu where your app should appear.
 # One of: "Badge", "Music", "Media", "Apps", "Games", "Background"
-category = "Badge"
+category = "Apps"
 
 # OPTIONAL: Same as above, for compatibility with older firmware
 # versions that can't handle categories introduced afterwards.
