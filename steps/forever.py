@@ -16,6 +16,9 @@ class RepeatForeverStep(BlockStep):
 
 
 class InsertRepeatForeverStepUI:
+
+  name = "Repeat forever"
+
   def __init__(self, app):
       self.app = app
 

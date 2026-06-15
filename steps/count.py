@@ -18,6 +18,9 @@ class CountLoopsStep(Step):
 
 
 class InsertCountLoopsUI:
+
+  name = "Count loops"
+
   def __init__(self, app):
     self.app = app
 

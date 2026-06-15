@@ -31,6 +31,9 @@ class WhenPlayStep(WhenStep):
 
 
 class InsertWhenPlayStepUI:
+
+  name = "When play starts"
+
   def __init__(self, app):
     self.app = app
 

@@ -65,6 +65,9 @@ class WhenPowerConnected(WhenHysteresisStep):
 
 
 class InsertPowerConnected:
+
+  name = "When power connected"
+
   def __init__(self, app):
     self.app = app
 
@@ -103,6 +106,9 @@ class WhenBatteryFull(WhenHysteresisStep):
 
 
 class InsertBatteryFull:
+
+  name = "When battery full"
+
   def __init__(self, app):
     self.app = app
 

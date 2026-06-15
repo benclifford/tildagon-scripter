@@ -41,6 +41,9 @@ class PauseStep(Step):
 
 
 class InsertPauseStepUI:
+
+  name = "Pause"
+
   def __init__(self, app):
     self.app = app
     self.ui_delegate = Menu(self.app, ["500ms", "1 second", "5 seconds", "30 seconds"], back_handler=self._handle_menu_back, select_handler=self._handle_menu_select)

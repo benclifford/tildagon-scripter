@@ -46,6 +46,9 @@ class WhenIMUUpright(WhenStep):
 
 
 class InsertIMUUpright:
+
+  name = "When badge goes upright"
+
   def __init__(self, app):
     self.app = app
 

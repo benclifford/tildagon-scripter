@@ -38,6 +38,9 @@ class LEDStep(Step):
 # On LED picker select, 
 
 class InsertLEDStepUI:
+
+  name = "Set LEDs"
+
   def __init__(self, app):
     self.app = app
     self.rgb = (0,0,0)

@@ -44,6 +44,9 @@ class WhenButtonPushedStep(WhenStep):
 
 
 class InsertWhenButtonPushedUI:
+
+  name = "When button pushed"
+
   def __init__(self, app):
     self.app = app
 
