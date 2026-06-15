@@ -11,15 +11,17 @@ import random
 import sys
 import time
 
+from .default import default_program
 from .steps.base import BlockStep, Step, EndStep, WhenStep
-from .steps.button import WhenButtonPushedStep, InsertWhenButtonPushedUI
-from .steps.count import CountLoopsStep, InsertCountLoopsUI
-from .steps.forever import RepeatForeverStep, InsertRepeatForeverStepUI
-from .steps.imu import WhenIMUUpright, InsertIMUUpright
+from .steps.button import InsertWhenButtonPushedUI
+from .steps.count import InsertCountLoopsUI
+from .steps.forever import InsertRepeatForeverStepUI
+from .steps.imu import InsertIMUUpright
 from .steps.battery import InsertBatteryFull, InsertPowerConnected
-from .steps.led import LEDStep, InsertLEDStepUI
-from .steps.pause import PauseStep, InsertPauseStepUI
-from .steps.whenplay import WhenPlayStep, InsertWhenPlayStepUI
+from .steps.led import InsertLEDStepUI
+from .steps.pause import InsertPauseStepUI
+from .steps.whenplay import InsertWhenPlayStepUI
+
 
 from .const import LIVE_SIZE, PLAY_MODE, EDIT_MODE, MENU_MODE, INSERT_STEP_MODE
 
@@ -36,26 +38,7 @@ STEP_PERIOD_MS = 100
 class ScripterApp(App):
   def __init__(self):
    try:
-    self.sequence = [WhenButtonPushedStep(self),
-                       LEDStep(255,255,255),
-                       PauseStep(500),
-                       LEDStep(0,0,255),
-                       PauseStep(500),
-                     EndStep(),
-
-                     WhenPlayStep(),
-                       RepeatForeverStep(),
-                         LEDStep(255,0,0),
-                         PauseStep(500),
-                         LEDStep(0,0,0),
-                         PauseStep(500),
-                       EndStep(),
-                     EndStep(),
-
-                     WhenIMUUpright(),
-                       LEDStep(0,255,0),
-                     EndStep(),
-                     ]
+    self.sequence = default_program(self)
 
     # sequence_pos can be positive or negative.
     # when it is negative, it represents something about the code being
