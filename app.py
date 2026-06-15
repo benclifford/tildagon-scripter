@@ -16,7 +16,7 @@ from .steps.button import WhenButtonPushedStep, InsertWhenButtonPushedUI
 from .steps.count import CountLoopsStep, InsertCountLoopsUI
 from .steps.forever import RepeatForeverStep, InsertRepeatForeverStepUI
 from .steps.imu import WhenIMUUpright, InsertIMUUpright
-from .steps.battery import WhenBatteryFull, InsertBatteryFull, WhenPowerConnected, InsertPowerConnected
+from .steps.battery import InsertBatteryFull, InsertPowerConnected
 from .steps.led import LEDStep, InsertLEDStepUI
 from .steps.pause import PauseStep, InsertPauseStepUI
 from .steps.whenplay import WhenPlayStep, InsertWhenPlayStepUI
