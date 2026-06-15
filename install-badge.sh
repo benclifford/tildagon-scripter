@@ -10,3 +10,5 @@ done
 for a in metadata.json tildagon.toml; do
   mpremote fs cp --verbose ~/src/tildagon-sequencer/${a} :apps/scripter/
 done
+
+mpremote reset
