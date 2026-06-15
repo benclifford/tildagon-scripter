@@ -16,6 +16,7 @@ from .steps.button import WhenButtonPushedStep, InsertWhenButtonPushedUI
 from .steps.count import CountLoopsStep, InsertCountLoopsUI
 from .steps.forever import RepeatForeverStep, InsertRepeatForeverStepUI
 from .steps.imu import WhenIMUUpright, InsertIMUUpright
+from .steps.battery import WhenBatteryFull, InsertBatteryFull, WhenPowerConnected, InsertPowerConnected
 from .steps.led import LEDStep, InsertLEDStepUI
 from .steps.pause import PauseStep, InsertPauseStepUI
 from .steps.whenplay import WhenPlayStep, InsertWhenPlayStepUI
@@ -450,7 +451,7 @@ class InsertStepUI:
     #    a top level (When) step
     assert self.app.sequence_pos >= 0
     assert self.app.sequence_pos < len(self.app.sequence)
-    step_menu_options = ["When button pushed", "When badge goes upright", "When play starts"]
+    step_menu_options = ["When button pushed", "When badge goes upright", "When play starts", "When power connected", "When battery full"]
 
     if not isinstance(self.app.sequence[self.app.sequence_pos], WhenStep):
         step_menu_options.extend(["Set LEDs", "Pause", "Count loops", "Repeat forever"])
@@ -489,6 +490,10 @@ class InsertStepUI:
       self.ui_delegate = InsertRepeatForeverStepUI(self.app)
     elif item == "When badge goes upright":
       self.ui_delegate = InsertIMUUpright(self.app)
+    elif item == "When battery full":
+      self.ui_delegate = InsertBatteryFull(self.app)
+    elif item == "When power connected":
+      self.ui_delegate = InsertPowerConnected(self.app)
     elif item == "When play starts":
       self.ui_delegate = InsertWhenPlayStepUI(self.app)
     else:
