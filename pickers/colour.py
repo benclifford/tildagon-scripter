@@ -4,27 +4,22 @@ from tildagonos import tildagonos
 from system.eventbus import eventbus
 from events.input import BUTTON_TYPES, ButtonDownEvent
 
+NICE_COLOURS = [(255,0,0), (0,255,0), (0,0,255), (255,255,255), (0,0,0),
+                (255,255,0), (255,0,255), (0,255,255)]
+
 class ColourPicker:
 
   def __init__(self, app, callback):
     self.app = app
     self.chosen_colour = 0
-    self.rgb = (0,0,0)
+    self.rgb = NICE_COLOURS[self.chosen_colour]
     self._callback = callback
     eventbus.on(ButtonDownEvent, self._handle_buttondown, self.app)
 
   def update(self, delta):
-    if self.chosen_colour == 0:
-      self.rgb = (255,0,0)
-    elif self.chosen_colour == 1:
-      self.rgb = (0,255,0)
-    elif self.chosen_colour == 2:
-      self.rgb = (0,0,255)
-    elif self.chosen_colour == 3:
-      self.rgb = (0,0,0)
-    else:
-      self.rgb = (0,0,0)
-
+    assert self.chosen_colour >= 0
+    assert self.chosen_colour < len(NICE_COLOURS)
+    self.rgb = NICE_COLOURS[self.chosen_colour]
     for n in range(0,12):
       tildagonos.leds[n+1] = self.rgb
     tildagonos.leds.write()
@@ -39,9 +34,13 @@ class ColourPicker:
 
   def _handle_buttondown(self, event):
     if BUTTON_TYPES["UP"] in event.button:
-      self.chosen_colour = (self.chosen_colour + 1) % 4
+      self.chosen_colour = (self.chosen_colour + 1) % len(NICE_COLOURS)
+      assert self.chosen_colour >= 0
+      assert self.chosen_colour < len(NICE_COLOURS)
     elif BUTTON_TYPES["DOWN"] in event.button:
-      self.chosen_colour = (self.chosen_colour + 1) % 4
+      self.chosen_colour = (self.chosen_colour + 1) % len(NICE_COLOURS)
+      assert self.chosen_colour >= 0
+      assert self.chosen_colour < len(NICE_COLOURS)
     elif BUTTON_TYPES["CONFIRM"] in event.button:
       eventbus.remove(ButtonDownEvent, self._handle_buttondown, self.app)
       self._callback(self.rgb)
