@@ -58,7 +58,7 @@ class WhenHysteresisStep(WhenStep):
 
 class WhenPowerConnected(WhenHysteresisStep):
   def __init__(self):
-    super().__init__(high=4.5, low=3, text="power is connected")
+    super().__init__(high=4.5, low=3, text="When power connected")
 
   def poll_value(self):
     return power.Vin()
@@ -99,7 +99,7 @@ class InsertPowerConnected:
 
 class WhenBatteryFull(WhenHysteresisStep):
   def __init__(self):
-    super().__init__(high=0.98, low=0.96, text="battery is full")
+    super().__init__(high=0.98, low=0.96, text="When battery full")
 
   def poll_value(self):
     return power.BatteryLevel()
