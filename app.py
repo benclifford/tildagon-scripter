@@ -17,7 +17,7 @@ from .steps.button import InsertWhenButtonPushedUI
 from .steps.count import InsertCountLoopsUI
 from .steps.forever import InsertRepeatForeverStepUI
 from .steps.imu import InsertIMUUpright
-from .steps.battery import InsertBatteryFull, InsertPowerConnected
+from .steps.battery import InsertBatteryFull, InsertPowerConnected, InsertPowerDisconnected
 from .steps.led import InsertLEDStepUI
 from .steps.pause import InsertPauseStepUI
 from .steps.whenplay import InsertWhenPlayStepUI
@@ -439,7 +439,7 @@ class InsertStepUI:
     # or something else to avoid editing the main app code too much (or
     # at all).
 
-    self.inserters = [InsertWhenButtonPushedUI, InsertIMUUpright, InsertWhenPlayStepUI, InsertPowerConnected, InsertBatteryFull]
+    self.inserters = [InsertWhenButtonPushedUI, InsertIMUUpright, InsertWhenPlayStepUI, InsertPowerConnected, InsertPowerDisconnected, InsertBatteryFull]
     action_inserters = [InsertLEDStepUI, InsertPauseStepUI, InsertCountLoopsUI, InsertRepeatForeverStepUI]
 
     if not isinstance(self.app.sequence[self.app.sequence_pos], WhenStep):

@@ -12,24 +12,29 @@ from ..const import LIVE_SIZE, EDIT_MODE
 
 
 class WhenHysteresisStep(WhenStep):
-  def __init__(self, *, high: float, low: float, text: str):
+  def __init__(self, *, text: str):
     super().__init__()
     # This is factored hysteresis code for battery checking but
     # it should be usable for any value-hysteresis kind of
     # when block, I think (see how its like IMU code)
-    self.last_state = False  # False is "not triggered" - TODO: should start at current value.
-    self.low = low
-    self.high = high
+    self.value = 0  # this 0 is never used because we always poll
+    self.last_state = False  # False is "not triggered" - TODO: should start at current value, otherwise we trigger at the start.
     self.text = text
 
   def poll_value(self):
     raise RuntimeError("You need to override this with own measurement")
 
+  def is_happening(self):
+    raise RuntimeError("You need to override this with own measurement")
+
+  def is_not_happening(self):
+    raise RuntimeError("You need to override this with own measurement")
+
   def poll_for_when(self):
-    next_value = self.poll_value()
-    if next_value < self.low:
+    self.value = self.poll_value()
+    if self.is_not_happening():
       next_state = False
-    elif next_value > self.high:
+    elif self.is_happening():
       next_state = True
     else:
       next_state = self.last_state
@@ -58,10 +63,17 @@ class WhenHysteresisStep(WhenStep):
 
 class WhenPowerConnected(WhenHysteresisStep):
   def __init__(self):
-    super().__init__(high=4.5, low=3, text="When power connected")
+    super().__init__(text="When power connected")
 
   def poll_value(self):
     return power.Vin()
+
+  def is_happening(self):
+    return self.value > 4.5
+
+  def is_not_happening(self):
+    return self.value < 3
+
 
 
 class InsertPowerConnected:
@@ -97,12 +109,66 @@ class InsertPowerConnected:
     pass
 
 
+class WhenPowerDisconnected(WhenHysteresisStep):
+  def __init__(self):
+    super().__init__(text="When power disconnected")
+
+  def poll_value(self):
+    return power.Vin()
+
+  def is_happening(self):
+    return self.value < 1
+
+  def is_not_happening(self):
+    return self.value > 1
+
+
+class InsertPowerDisconnected:
+
+  name = "When power disconnected"
+
+  def __init__(self, app):
+    self.app = app
+
+  def update(self, delta):
+    """This is a WhenStep so the insert should happen at the end of the program, as a new top level block."""
+    self.app.sequence.append(WhenPowerDisconnected())
+    self.app.sequence.append(EndStep())
+
+    # move cursor to end step so that a subsequent InsertStep will populate the new when block
+    self.app.sequence_pos = len(self.app.sequence) - 1
+
+    assert self.app.sequence_pos >= 0
+    assert self.app.sequence_pos < len(self.app.sequence)
+
+    # this will make the end step be populated properly
+    # which won't happen otherwise.
+    # TODO: maybe steps (aka step authors) shouldn't be
+    # responsible for this and I can make it happen when
+    # going back to one of the framework modes?
+    self.app._reset_steps()
+
+    # and remove ourselves from the app
+    self.app.ui_delegate = None
+    self.app._mode = EDIT_MODE
+
+  def draw(self, ctx):
+    pass
+
+
+
 class WhenBatteryFull(WhenHysteresisStep):
   def __init__(self):
-    super().__init__(high=0.98, low=0.96, text="When battery full")
+    super().__init__(text="When battery full")
 
   def poll_value(self):
     return power.BatteryLevel()
+
+  def is_happening(self):
+    return self.value > 0.98
+
+  def is_not_happening(self):
+    return self.value < 0.96
 
 
 class InsertBatteryFull:
